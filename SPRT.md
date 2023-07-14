@@ -7,6 +7,7 @@ an additional scaling based on draw rate in its SPRT calculation.
 ## Modelling Elo using [BayesElo](https://www.remi-coulom.fr/Bayesian-Elo/#theory)
 
 Elo is primarily based on a sigmoid scale
+
 $$
 f(x) = \frac{1}{1 + 10^{-x/400}}
 $$
@@ -83,6 +84,7 @@ playing.
 ## Calculating LLR
 
 The formula for LLR is as follows
+
 $$
 LLR = LL(e_1) - LL(e_0)
 $$
