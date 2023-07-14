@@ -40,11 +40,13 @@ import argparse
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="llr calculator")
-    parser.add_argument('-w', '--wins', type=int, help="number of wins")
-    parser.add_argument('-l', '--losses', type=int, help="number of losses")
-    parser.add_argument('-d', '--draws', type=int, help="number of draws")
-    parser.add_argument('-e0', '--elo0', type=float, help="lower elo")
-    parser.add_argument('-e1', '--elo1', type=float, help="upper elo")
+    parser.add_argument('-w', '--wins', type=int, help="number of wins", default=0)
+    parser.add_argument('-l', '--losses', type=int, help="number of losses", default=0)
+    parser.add_argument('-d', '--draws', type=int, help="number of draws", default=0)
+    parser.add_argument('-e0', '--elo0', type=float, help="lower elo", default=0)
+    parser.add_argument('-e1', '--elo1', type=float, help="upper elo", default=5)
+    parser.add_argument('-a', '--alpha', type=float, help="upper elo", default=0.05)
+    parser.add_argument('-b', '--beta', type=float, help="upper elo", default=0.05)
     args = parser.parse_args()
 
     llr = sprt(
@@ -55,4 +57,15 @@ if __name__ == "__main__":
         args.elo1
     )
 
-    print(f"llr = {llr}")
+    lower = math.log(args.beta / (1 - args.alpha))
+    upper = math.log((1 - args.beta) / args.alpha)
+
+    if llr >= upper:
+        message = "H1 Accepted"
+    elif llr <= lower:
+        message = "H0 Accepted"
+    else:
+        message = "Continue Playing"
+
+    print(f"LLR: {llr:.3} ({lower:.3}, {upper:.3})")
+    print(message)
