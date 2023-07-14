@@ -21,10 +21,10 @@ def adj_probs(b: BayesElo) -> Probability:
     return Probability(win, loss, 1 - win - loss)
 
 def sprt(wins: int, losses: int, draws: int, elo0: float, elo1: float) -> float:
-    total = wins + draws + losses
-
-    if total == 0:
+    if wins == 0 or losses == 0 or draws == 0:
         return 0
+
+    total = wins + draws + losses
 
     probs = Probability(wins / total, losses / total, draws / total)
 
