@@ -1,5 +1,10 @@
 # SPRT
 
-This repo contains a scipt to calculate SPRT results, as per OpenBench's method, as well
-as explanations/derivations of SPRT (used by OpenBench and CuteChess) and GSPRT (of which
-a more developed method is used by Fishtest) in the context of chess elo.
+This repo contains:
+- a scipt to calculate SPRT results, as per OpenBench's method
+- derivation/explanations of
+    - [SPRT](SPRT.md) (used by OpenBench and CuteChess)
+    - [GSPRT](GSPRT.md) (of which a more developed method is used by Fishtest)
+
+All of this is, of course, in the context of chess. Both SPRT and GSPRT are self-contained
+w.r.t each other, some familiarity with what hypothesis testing does is assumed.
