@@ -20,7 +20,11 @@ def adj_probs(b: BayesElo) -> Probability:
     loss = sigmoid(b.draw + b.elo)
     return Probability(win, loss, 1 - win - loss)
 
-def sprt(wins: int, losses: int, draws: int, elo0: float, elo1: float) -> float:
+def scale(draw_elo: float) -> float:
+    x = pow(10, -draw_elo / 400)
+    return 4 * x / pow(1 + x, 2)
+
+def sprt(wins: int, losses: int, draws: int, elo0: float, elo1: float, cutechess: bool = False) -> float:
     if wins == 0 or losses == 0 or draws == 0:
         return 0.0
 
@@ -30,8 +34,13 @@ def sprt(wins: int, losses: int, draws: int, elo0: float, elo1: float) -> float:
 
     draw_elo = 200 * math.log10((1 - 1 / probs.win) * (1 - 1 / probs.loss))
 
-    b0 = BayesElo(elo0, draw_elo)
-    b1 = BayesElo(elo1, draw_elo)
+    # cutechess applies a draw elo based scaling
+    s = 1
+    if cutechess:
+        s = scale(draw_elo)
+
+    b0 = BayesElo(elo0 / s, draw_elo)
+    b1 = BayesElo(elo1 / s, draw_elo)
 
     p0 = adj_probs(b0)
     p1 = adj_probs(b1)
@@ -49,8 +58,9 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--draws', type=int, help="number of draws", default=0)
     parser.add_argument('-e0', '--elo0', type=float, help="lower elo", default=0)
     parser.add_argument('-e1', '--elo1', type=float, help="upper elo", default=5)
-    parser.add_argument('-a', '--alpha', type=float, help="upper elo", default=0.05)
-    parser.add_argument('-b', '--beta', type=float, help="upper elo", default=0.05)
+    parser.add_argument('-a', '--alpha', type=float, help="allowed margin of error for Type 1", default=0.05)
+    parser.add_argument('-b', '--beta', type=float, help="allowed margin of error for Type 2", default=0.05)
+    parser.add_argument('--cutechess', action="store_true", help="use CuteChess draw scaling")
     args = parser.parse_args()
 
     llr = sprt(
@@ -58,7 +68,8 @@ if __name__ == "__main__":
         args.losses,
         args.draws,
         args.elo0,
-        args.elo1
+        args.elo1,
+        args.cutechess
     )
 
     lower = math.log(args.beta / (1 - args.alpha))
