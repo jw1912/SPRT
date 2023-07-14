@@ -22,7 +22,7 @@ def adj_probs(b: BayesElo) -> Probability:
 
 def sprt(wins: int, losses: int, draws: int, elo0: float, elo1: float) -> float:
     if wins == 0 or losses == 0 or draws == 0:
-        return 0
+        return 0.0
 
     total = wins + draws + losses
 
@@ -71,5 +71,5 @@ if __name__ == "__main__":
     else:
         message = "Continue Playing"
 
-    print(f"LLR: {float(llr):.3} ({float(lower):.3}, {float(upper):.3})")
+    print(f"LLR: {llr:.3} ({lower:.3}, {upper:.3})")
     print(message)
