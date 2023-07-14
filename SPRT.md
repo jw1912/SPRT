@@ -128,7 +128,7 @@ $$
 We model the outcome as a trinomial distribution, so
 
 $$
-P(W, L, D \vert e) = \frac{n!}{W! L! D!} w^W l^L d^D
+P(W, L, D \vert e) = \frac{N!}{W! L! D!} w^W l^L d^D
 $$
 
 then
@@ -136,8 +136,8 @@ then
 $$
 \begin{align*}
 LL(e) & = \log(P(W, L, D \vert e)) \\
-    & = \log(\frac{n!}{W! L! D!} w^W l^L d^D) \\
-    & = W \log(w) + L \log(l) + D \log(d) + \log(\frac{n!}{W! L! D!})
+    & = \log(\frac{N!}{W! L! D!} w^W l^L d^D) \\
+    & = W \log(w) + L \log(l) + D \log(d) + \log(\frac{N!}{W! L! D!})
 \end{align*}
 $$
 
@@ -147,8 +147,8 @@ we get a formula for the Log-Likelihood Ratio
 $$
 \begin{align*}
 LLR & = LL(e_1) - LL(e_2) \\
-    & = W \log(w_1) + L \log(l_1) + D \log(d_1) + \log(\frac{n!}{W! L! D!}) \\
-    & \quad \quad - W \log(w_0) - L \log(l_0) - D \log(d_0) - \log(\frac{n!}{W! L! D!}) \\
+    & = W \log(w_1) + L \log(l_1) + D \log(d_1) + \log(\frac{N!}{W! L! D!}) \\
+    & \quad \quad - W \log(w_0) - L \log(l_0) - D \log(d_0) - \log(\frac{N!}{W! L! D!}) \\
     & = W \log(w_1 / w_0) + L \log(l_1 / l_0) + D \log(d_1 / d_0)
 \end{align*}
 $$
