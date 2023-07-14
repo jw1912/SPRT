@@ -89,18 +89,18 @@ $$
 
 where $LL(x)$ is the *Log-Likelihood* of elo $x$.
 
-Given a random variable $\bold{X} = (X_1, X_2, ...)$ with some distribution with parameter
-$\theta$, the Likelihood Function of $\bold{X}$, based on a sample with outcome
-$\bold{X} = \bold{x}$, is
+Given a random variable $\mathbf{X} = (X_1, X_2, ...)$ with some distribution with parameter
+$\theta$, the Likelihood Function of $\mathbf{X}$, based on a sample with outcome
+$\mathbf{X} = \mathbf{x}$, is
 $$
-\mathcal{L}(\theta) = P(\bold{X} = \bold{x} \vert \theta)
+\mathcal{L}(\theta) = P(\mathbf{X} = \mathbf{x} \vert \theta)
 $$
-i.e. the probability of achieving outcome $\bold{x}$ under parameter $\theta$.
+i.e. the probability of achieving outcome $\mathbf{x}$ under parameter $\theta$.
 
 And then the Log-Likelihood is just the natural logarithm of this:
 
 $$
-LL(\theta) = \log(P(\bold{X} = \bold{x} \vert \theta))
+LL(\theta) = \log(P(\mathbf{X} = \mathbf{x} \vert \theta))
 $$
 
 Now let's calculate the Log-Likelihood of the outcome after $N$ games, say we have
