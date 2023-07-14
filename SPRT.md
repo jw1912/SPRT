@@ -83,6 +83,8 @@ playing.
 
 ## Calculating LLR
 
+### Definition
+
 The formula for LLR is as follows
 
 $$
@@ -106,6 +108,8 @@ And then the Log-Likelihood is just the natural logarithm of this:
 $$
 LL(\theta) = \log(P(\mathbf{X} = \mathbf{x} \vert \theta))
 $$
+
+### For Chess
 
 Now let's calculate the Log-Likelihood of the outcome after $N$ games, say we have
 $W$ wins, $L$ losses and $D = N - W - L$ draws, with an elo parameter of $e$.

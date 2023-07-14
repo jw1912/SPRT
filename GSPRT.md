@@ -10,6 +10,7 @@ obviously $N = W + L + D$, then the estimated probabilities are $w = W / N$,
 $l = L / N$ and $d = D / N$.
 
 Now define the random variable
+
 $$
 X = \frac{W + D / 2}{N}
 $$
@@ -17,6 +18,7 @@ $$
 Some useful properties of the trinomial distribution are derived
 [here](https://webspace.maths.qmul.ac.uk/i.goldsheid/MTH5118/Notes6-09.pdf),
 from which it follows that
+
 $$
 \mathbb{E}[X] = w + d / 2
 $$
