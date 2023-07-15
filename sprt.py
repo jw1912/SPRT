@@ -61,6 +61,9 @@ def gsprt(wins: int, losses: int, draws: int, elo0: float, elo1: float, cuteches
     p1 = expected_score(elo1)
 
     N = wins + losses + draws
+    if N == 0:
+        return 0.0
+
     w = wins / N
     d = draws / N
 
