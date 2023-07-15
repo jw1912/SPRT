@@ -1,28 +1,34 @@
 import math
 from dataclasses import dataclass
 
+
 @dataclass
 class Probability:
     win: float
     loss: float
     draw: float
 
+
 @dataclass
 class BayesElo:
     elo: float
     draw: float
 
-def sigmoid(x: float) -> float:
-    return 1.0 / (1.0 + math.pow(10, x / 400.0))
+
+def expected_score(x: float) -> float:
+    return 1.0 / (1.0 + math.pow(10, -x / 400.0))
+
 
 def adj_probs(b: BayesElo) -> Probability:
-    win  = sigmoid(b.draw - b.elo)
-    loss = sigmoid(b.draw + b.elo)
+    win  = expected_score(-b.draw + b.elo)
+    loss = expected_score(-b.draw - b.elo)
     return Probability(win, loss, 1 - win - loss)
+
 
 def scale(draw_elo: float) -> float:
     x = pow(10, -draw_elo / 400)
     return 4 * x / pow(1 + x, 2)
+
 
 def sprt(wins: int, losses: int, draws: int, elo0: float, elo1: float, cutechess: bool = False) -> float:
     if wins == 0 or losses == 0 or draws == 0:
@@ -49,9 +55,23 @@ def sprt(wins: int, losses: int, draws: int, elo0: float, elo1: float, cutechess
         + losses * math.log(p1.loss / p0.loss) \
         + draws  * math.log(p1.draw / p0.draw)
 
-import argparse
+
+def gsprt(wins: int, losses: int, draws: int, elo0: float, elo1: float, cutechess: bool = False) -> float:
+    p0 = expected_score(elo0)
+    p1 = expected_score(elo1)
+
+    N = wins + losses + draws
+    w = wins / N
+    d = draws / N
+
+    X = w + d /2
+    varX = (w + d / 4 - pow(X, 2)) / N
+
+    return (p1 - p0) * (2 * X - p0 - p1) / (2 * varX)
+
 
 if __name__ == "__main__":
+    import argparse
     parser = argparse.ArgumentParser(description="llr calculator")
     parser.add_argument('-w', '--wins', type=int, help="number of wins", default=0)
     parser.add_argument('-l', '--losses', type=int, help="number of losses", default=0)
@@ -61,16 +81,12 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--alpha', type=float, help="allowed margin of error for Type 1", default=0.05)
     parser.add_argument('-b', '--beta', type=float, help="allowed margin of error for Type 2", default=0.05)
     parser.add_argument('--cutechess', action="store_true", help="use CuteChess draw scaling")
+    parser.add_argument('--gsprt', action="store_true", help="run GSPRT calculation instead")
     args = parser.parse_args()
 
-    llr = sprt(
-        args.wins,
-        args.losses,
-        args.draws,
-        args.elo0,
-        args.elo1,
-        args.cutechess
-    )
+    func = gsprt if args.gsprt else sprt
+
+    llr = func(args.wins, args.losses, args.draws, args.elo0, args.elo1, args.cutechess)
 
     lower = math.log(args.beta / (1 - args.alpha))
     upper = math.log((1 - args.beta) / args.alpha)

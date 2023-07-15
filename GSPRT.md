@@ -69,10 +69,7 @@ $$
 LLR = \frac{(p_1 - p_0)(2X - p_0 - p_1)}{2var(X)}
 $$
 
-where $X$ and $var(X)$ are based on the games played so far.
-
-All that remains is to convert our elo bounds $e_0$, $e_1$ to $p_0$, $p_1$ respectively, which we do using
-the classical formula
+where $X$ and $var(X)$ are based on the games played so far, and
 
 $$
 p_i = \frac{1}{1 + 10^{-e_i / 400}}
