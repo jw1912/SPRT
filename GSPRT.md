@@ -1,5 +1,7 @@
 # GSPRT
 
+GSPRT stands for Generalised SPRT.
+
 ## Modelling as a Trinomial
 
 Chess games can have 3 outcomes (duh) so we can model as a trinomial, $w$, $l$
@@ -15,15 +17,13 @@ $$
 X = \frac{W + D / 2}{N}
 $$
 
-Some useful properties of the trinomial distribution are derived
-[here](https://webspace.maths.qmul.ac.uk/i.goldsheid/MTH5118/Notes6-09.pdf),
-from which it follows that
+Using some basic properties of multinomial distributions[^TRINOM], it follows that
 
 $$
 \mathbb{E}[X] = w + d / 2
 $$
 
-And now, for calculating the variance in $X$:
+and
 
 $$
 \mathbb{E}[X^2] = \frac{1}{N^2} (\mathbb{E}[W^2] +\mathbb{E}[WD] + \mathbb{E}[D^2] / 4)
@@ -41,7 +41,7 @@ $$
 \mathbb{E}[WD] = N (N - 1) w d
 $$
 
-Therefore
+therefore
 
 $$
 \begin{align*}
@@ -51,3 +51,18 @@ $$
 & = \frac{1}{N} (w + d / 4) + (1 - \frac{1}{N}) (w + d / 2)^2
 \end{align*}
 $$
+
+and so finally
+
+$$
+var(X) = \frac{1}{N} (w + d/4 - (w + d/2)^2)
+$$
+
+
+
+
+[^TRINOM]: [The Trinomial Distribution](https://webspace.maths.qmul.ac.uk/i.goldsheid/MTH5118/Notes6-09.pdf)
+
+[^GSPRT]: [Generalized Sequential Probability Ratio Test for Separate Families of Hypotheses](http://stat.columbia.edu/~jcliu/paper/GSPRT_SQA3.pdf)
+
+[^GSPRT_APPROX]: [A Practical Introduction to the GSPRT](https://hardy.uhasselt.be/Toga/GSPRT_approximation.pdf)
