@@ -73,6 +73,44 @@ def gsprt(wins: int, losses: int, draws: int, elo0: float, elo1: float, cuteches
     return (p1 - p0) * (2 * X - p0 - p1) / (2 * varX)
 
 
+def erf_inv(x):
+    a = 8 * (math.pi - 3) / (3 * math.pi * (4 - math.pi))
+    y = math.log(1 - x * x)
+    z = 2 / (math.pi * a) + y / 2
+    return math.copysign(math.sqrt(math.sqrt(z * z - y / a) - z), x)
+
+
+def phi_inv(p):
+    return math.sqrt(2)*erf_inv(2*p-1)
+
+
+def elo(score: float) -> float:
+    if score <= 0 or score >= 1:
+        return 0.0
+    return -400 * math.log10( 1 / score - 1)
+
+
+def elo_wld(wins, losses, draws):
+    # win/loss/draw ratio
+    N = wins + losses + draws;
+    if N == 0: return (0, 0, 0)
+    w = float(wins)  / N
+    l = float(losses)/ N
+    d = float(draws) / N
+
+    # mu is the empirical mean of the variables (Xi), assumed i.i.d.
+    mu = w + d/2
+
+    # stdev is the empirical standard deviation of the random variable (X1+...+X_N)/N
+    stdev = math.sqrt(w*(1-mu)**2 + l*(0-mu)**2 + d*(0.5-mu)**2) / math.sqrt(N)
+
+    # 95% confidence interval for mu
+    mu_min = mu + phi_inv(0.025) * stdev
+    mu_max = mu + phi_inv(0.975) * stdev
+
+    return (elo(mu_min), elo(mu), elo(mu_max))
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="llr calculator")
@@ -101,5 +139,7 @@ if __name__ == "__main__":
     else:
         message = "Continue Playing"
 
-    print(f"LLR: {llr:.3} ({lower:.3}, {upper:.3})")
+    e1, e2, e3 = elo_wld(args.wins, args.losses, args.draws)
+    print(f"ELO: {e2:.3} +- {(e3 - e1) / 2:.3} [{e1:.3}, {e3:.3}]")
+    print(f"LLR: {llr:.3} [{args.elo0}, {args.elo1}] ({lower:.3}, {upper:.3}) ")
     print(message)
