@@ -51,6 +51,7 @@ def sprt(
     s = 1
     if cutechess:
         s = scale(draw_elo)
+        print(f"Adjusted Bounds: [{elo0 / s:.3}, {elo1 / s:.3}]")
 
     b0 = BayesElo(elo0 / s, draw_elo)
     b1 = BayesElo(elo1 / s, draw_elo)
