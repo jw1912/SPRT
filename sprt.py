@@ -31,14 +31,20 @@ def scale(draw_elo: float) -> float:
 
 
 def sprt(
-        wins: int,
-        losses: int,
-        draws: int,
+        wins: float,
+        losses: float,
+        draws: float,
         elo0: float,
         elo1: float,
         cutechess: bool = False
         ) -> float:
-    if wins == 0 or losses == 0 or draws == 0:
+            
+    if cutechess:
+        wins += 0.5
+        losses += 0.5
+        draws += 0.5
+
+    if wins == 0 or losses == 0:
         return 0.0
 
     total = wins + draws + losses
